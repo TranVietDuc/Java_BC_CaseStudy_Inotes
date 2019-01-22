@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Create A Note</h1>
+<th:block th:if="${message}"><p th:text="${message}" th:class="notify"></p></th:block>
+<a href="/">Back to Notes Page</a>
+<form th:action="@{/create-note}" method="post" th:object="${note}" id="form" >
+    <table>
+        <tr>
+            <td>Title: </td>
+            <td><input type="text" th:field="*{title}"/></td>
+            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title Error</td>
+        </tr>
+        <tr>
+            <td>Content: </td>
+            <td><textarea th:field="*{content}"></textarea></td>
+            <td th:if="${#fields.hasErrors('content')}" th:errors="*{content}">content Error</td>
+        </tr>
+        <tr>
+            <td>Type:</td>
+            <td>
+                <select th:field="*{type}">
+                    <option th:each="p : ${types}" th:value="${p.id}" th:text="${p.name}"></option>
+                </select>
+            <td th:if="${#fields.hasErrors('type')}" th:errors="*{type}">type Error</td>
+
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Save"/></td>
+            <td><button><a href="/">Cancel</a></button></td>
+        </tr>
+    </table>
+</form>
+<footer th:replace="layout :: footer"></footer>
+</body>
+</html>

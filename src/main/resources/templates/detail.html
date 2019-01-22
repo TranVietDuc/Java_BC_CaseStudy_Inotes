@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>View Note</h1>
+<a href="/">Back to Note List</a>
+
+<table>
+    <tr>
+        <h1 th:text="${note.title}"></h1>
+    </tr>
+    <tr><p th:text="${note.content}"></p></tr>
+</table>
+</body>
+</html>

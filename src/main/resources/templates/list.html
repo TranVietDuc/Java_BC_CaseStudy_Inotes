@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Duc's Notes</h1>
+<a href="/create-note">Create new Note</a>
+<p></p>
+
+<!-- Form tim kiem-->
+<form id="form">
+    <select name="type">
+        <option  th:each="p : ${types}"  th:value="${p.id}" th:text="${p.name}"></option>
+        <option value=-1  selected="selected" >All Types</option>
+    </select>
+    <input name="title" type="text" placeholder="Search by Title"/>
+    <input type="submit" value="Search"/>
+</form><br/>
+
+
+<!-- Chuyen trang-->
+<div class="pagination-div">
+   <span th:if="${notes.hasPrevious()}">
+       <a th:href="@{/(type=${searchedType},title=${searchedTitle},page=${notes.number - 1})}">Previous</a>
+   </span>
+    <th:block th:each="i: ${#numbers.sequence(0, notes.totalPages - 1)}">
+        <span th:if="${notes.number == i}" class="selected">[[${i}+1]]</span>
+        <span th:unless="${notes.number == i}">
+            <a th:href="@{/(type=${searchedType},title=${searchedTitle},page=${i},size=${notes.size})}">[[${i}+1]]</a>
+       </span>
+    </th:block>
+    <span th:if="${notes.hasNext()}">
+       <a  th:href="@{/(type=${searchedType},title=${searchedTitle},page=${notes.number + 1})}">Next</a>
+   </span>
+</div>
+
+<!-- Danh sach Notes-->
+<p></p>
+<table id="notes">
+    <tr>
+        <td>Number</td>
+        <td>Title</td>
+        <td><a href="/types">Type</a></td>
+        <td>Controller</td>
+    </tr>
+    <th:block th:each="note,i:${notes}" >
+        <tr>
+            <td><p th:text="${i.count}+${notes.number}*${notes.size}"></p></td>
+            <td>
+                <a th:href="@{/view-note/ __${note.id}__}">
+                    <p th:text="${note.title}"></p>
+                </a>
+            </td>
+            <td>
+                <p th:text="${note.type.name}"></p>
+            </td>
+            <td>
+                <a th:href="@{/edit-note/ __${note.id}__}">Edit</a>|<a th:href="@{/delete-note/ __${note.id}__}">Delete</a>
+            </td>
+        </tr>
+    </th:block>
+    <tr></tr>
+</table>
+<footer th:replace="layout :: footer"></footer>
+</body>
+</html>
